@@ -1,0 +1,66 @@
+
+class Foo{
+
+ private Integer var;
+ private char testando;
+private float money;
+	void fuckingDoWork(Integer aux){}
+}
+
+
+public class Test{
+
+
+
+
+
+
+
+private String name;
+	private boolean verdade;
+	public static void insere(Test test){
+	int a;
+	int bb;
+	String comp;
+
+	
+	String literal;
+		
+	if(  false && true||false){
+		a = 7;
+		if(false){
+		bb=9;}
+		if(false){}
+		if(true){}
+	}
+	insere(t,4);
+	a = (a+2)*3;
+	while(false&& false){
+	}
+	
+	
+	}
+	
+	
+	public static void main(String args){
+
+	Integer i;
+	String test;
+
+
+	if(true){}
+		System.out.println(maiquel);
+	
+	}
+	
+	public void testandoInsere(){
+	
+	
+	for(Integer i=0; i<100; i++){
+			for(Integer a=0; a<200; a++){
+		
+	}
+	}
+	
+	}
+}
