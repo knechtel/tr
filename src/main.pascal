@@ -12,7 +12,7 @@ testando: char;
 money: float; 
 end;
 
-procedure Testinsere(test :Test,teste2 :Test,test3 :Test);
+procedure TestTestinsere(trest: Foo ;teste2: Test ;test3: Test);
 var a :integer;bb :integer;comp :string;literal :string;
 Begin
 insere(t,4);

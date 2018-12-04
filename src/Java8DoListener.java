@@ -349,51 +349,35 @@ public class Java8DoListener extends Java8BaseListener {
 		}
 		if (mount != null) {
 			int cnt = 0;
-			for (String string : mount) {
+			for (Integer i = 0; i < mount.length; i++) {
+				String string = mount[i];
 				System.out.println("begin");
 				System.out.println(string);
 				Iterator<String> itr2 = mapRecord.keySet().iterator();
 				while (itr2.hasNext()) {
 					String key = itr2.next();
-					if (this.key.contains(key)) {
-						method = this.key;
-						String inst = parametro.replaceAll(key, "");
 
-						String[] arrayObjetos = inst.split(",");
-						int size = arrayObjetos.length;
-						String[] leftPar = this.key.split("\\(");
-						String[] arrayParam = leftPar[1].split(",");
-
-						String instancia = arrayObjetos[cnt];
-						String classe = string.replace(instancia, "");
-
-						String strPar = classe;
-						System.err.println("Do");
-						System.out.println("classe: " + strPar);
-						System.out.println("instancia: " + instancia);
-						if (cnt < size - 1) {
-							mountComplexString = mountComplexString + instancia + " :" + classe + ",";
+					if (string.contains(key)) {
+						String instancia = string.replace(key, "");
+						String classe = key;
+						System.out.println(string);
+						if (i == mount.length - 1) {
+							mountComplexString = mountComplexString + instancia + ": " + classe;
 						} else {
-							mountComplexString = mountComplexString + instancia + " :" + classe + ")";
+							mountComplexString = mountComplexString + instancia + ": " + classe + " ;";
 						}
-//						mountComplexString = arrayParam[1].replace(key + arrayObjetos[0], inst + ":" + key);
-
-						System.out.println(mountComplexString);
-						System.err.println("mount :" + mountComplexString);
-						cnt++;
-
-						// leftPar[1]=leftPar[1].replaceAll(key+inst, inst+":"+key);
-						// result1 = leftPar[0]+"("+leftPar[1];
-
 					}
+
 				}
 
 			}
-			String []formatMethod = method.split("\\(");
+			method =retorno + classNamed + key;
+			String[] formatMethod = method.split("\\(");
 			System.err.println(method);
 			System.out.println(mountComplexString);
 			String result4 = formatMethod[0]+"("+mountComplexString;
 			result4 =retorno + classNamed + result4;
+			result4=result4+")";
 			listaAssinatura.add(result4);
 			System.out.println(result4);
 		}

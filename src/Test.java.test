@@ -42,7 +42,7 @@ public class Test{
 
 private String name;
 	private boolean verdade;
-	public static void insere(Test test,Test teste2,Test test3){
+	public static void insere(Foo trest,Test teste2,Test test3){
 	int a;
 	int bb;
 	String comp;
