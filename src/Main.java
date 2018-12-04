@@ -5,6 +5,8 @@ import org.antlr.v4.runtime.tree.*;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
+import sun.security.x509.IssuingDistributionPointExtension;
+
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -26,6 +28,7 @@ public class Main {
 	private static Map<String, List<String>> commandMap = new HashMap<String, List<String>>();
 	private static Map<String, List<String>> recordMap = new HashMap<String, List<String>>();
 
+	private static String methodHead = "";
 	private static String chave;
 	static Integer contIF = 0;
 	private static String buffer;
@@ -41,12 +44,9 @@ public class Main {
 				str = str + "type" + "\n";
 				str = str + key + " = record " + "\n";
 
-				System.out.println(key);
-
 				List<String> list = recordMap.get(key);
 				for (String var : list) {
 					String subVar = var.replace("private", "");
-
 					if (subVar.contains("String")) {
 
 						String subVarString = subVar.replace("String", "");
@@ -87,7 +87,6 @@ public class Main {
 		// assinatura da funcao
 		String variable = "var ";
 
-		System.out.println("montando meu teste");
 		Iterator<String> itr2 = commandMap.keySet().iterator();
 		while (itr2.hasNext()) {
 			String key = itr2.next();
@@ -104,18 +103,18 @@ public class Main {
 
 				}
 			}
-			
-			System.out.println(stringFre);
-			// frequency = new StringTokenizer(stringFre, "if\\(").countTokens();
 
-			// JOptionPane.showMessageDialog(null, "frequencia "+frequency+" "+chave);
+			System.out.println(stringFre);
+
 			if (list != null) {
 				for (String string : list) {
 
-					Pattern r1 = Pattern.compile("String|Integer|int|[A-za-z]+");
+					Pattern r1 = Pattern.compile("\\,|String|Integer|int|[A-za-z]+");
 					Matcher m1 = r1.matcher(string);
 					boolean dealInt = false;
 					boolean dealString = false;
+					String[] strVec;
+					boolean retorno = false;
 					while (m1.find()) {
 						String min = m1.group();
 
@@ -142,47 +141,205 @@ public class Main {
 						} else {
 							dealString = false;
 						}
+
 					}
-					
-					
-					
+
+				}
+
+				// assinatura
+
+				Pattern r2 = Pattern.compile("\\(|[a-z]+|String|Integer|int|[A-za-z]+");
+				Matcher m2 = r2.matcher(key);
+				boolean dealInt = false;
+				boolean dealString = false;
+				boolean dealChar = false;
+				boolean dealClass = false;
+				boolean dealFloat = false;
+				boolean dealDouble = false;
+				boolean isParameter = false;
+				while (m2.find()) {
+					String min = m2.group();
+					System.err.println(min);
+
+					String[] strVec;
+					boolean retorno = false;
+
+					if (dealInt && !retorno) {
+						key = key.replaceAll("Integer" + min, min + " : integer");
+						System.err.println(key);
+
+					}
+					if (dealString) {
+						key = key.replaceAll("String" + min, min + " : string");
+
+					}
+
+					if (min.equals("int") || min.equals("Integer") && isParameter) {
+						dealInt = true;
+					} else {
+						dealInt = false;
+					}
+
+					if (min.equals("String") && retorno) {
+						dealString = true;
+					} else {
+						dealString = false;
+					}
+					if (min.equals("char") && retorno) {
+						dealChar = true;
+					} else {
+						dealChar = false;
+					}
+					if (min.equals("double") || min.equals("Double") || min.equals("double") && retorno) {
+						dealDouble = true;
+					} else {
+						dealDouble = false;
+					}
+					if (dealClass) {
+						key = key.replaceAll(min, min + " : SIMMM");
+
+					}
+					if (min.equals("(")) {
+						isParameter = true;
+					}
+
+					if (key.contains("void")) {
+
+						key = key.replaceAll("void", "");
+					}
+
+					if (key.contains("(")) {
+
+						// JOptionPane.showMessageDialog(null, key);
+						if (key.split("\\(").length > 1) {
+							strVec = key.split("\\(");
+							if (strVec[0].contains("Integer")) {
+								retorno = true;
+							} else {
+								retorno = false;
+							}
+							if (strVec[0].contains("String")) {
+								retorno = true;
+							} else {
+								retorno = false;
+							}
+							if (strVec[0].contains("char")) {
+								retorno = true;
+							} else {
+								retorno = false;
+							}
+
+							if (strVec[0].contains("double") || strVec[0].contains("Double")) {
+								retorno = true;
+							} else {
+								retorno = false;
+							}
+						}
+					}
+
+					for (String s : Java8DoListener.listClass) {
+
+						if (key.contains("(") && min.contains(s)) {
+							String troca = Test.sublexer(key, s, "|\\(|[a-z]+");
+							System.out.println(troca + "==troca");
+//							key = key.replaceAll(troca, " :"+s);
+						}
+					}
+
+				}
+			} else {
+				// assinatura caso o método esteja vazio
+
+				Pattern r2 = Pattern.compile("[a-z]+|String|Integer|int|[A-za-z]+");
+				Matcher m2 = r2.matcher(key);
+				boolean dealInt = false;
+				boolean dealString = false;
+
+				while (m2.find()) {
+					String min = m2.group();
+
+					if (dealInt) {
+						key = key.replaceAll("Integer" + min, min + " : integer");
+
+					}
+					if (dealString) {
+						key = key.replaceAll("String" + min, min + " : string");
+
+					}
+
+					if (min.equals("int") || min.equals("Integer")) {
+						dealInt = true;
+					} else {
+						dealInt = false;
+					}
+
+					if (min.equals("String")) {
+						dealString = true;
+					} else {
+						dealString = false;
+					}
+//					for (String s : Java8DoListener.listClass) {
+//						System.out.println(">>>>>" + s);
+//						System.err.println("<<<<<<"+min);
+//						System.out.println(">>>>>>"+key);
+//						if (key.contains("(")&& min.contains(s)) {
+//							String troca =Test.sublexer(key,s, "|\\(|[a-z]+");
+//							key = key.replaceAll(troca, " :"+s);
+//						}
+//					}
 				}
 
 			}
 
-			// assinatura
+			String[] strTrataRetorno = key.split("\\(");
 
-			Pattern r1 = Pattern.compile("\\,|String|Integer|int|[A-za-z]+");
-			Matcher m1 = r1.matcher(key);
-			boolean dealInt = false;
-			boolean dealString = false;
-			while (m1.find()) {
-				String min = m1.group();
+			String vlrInt = "";
+			boolean isInt = false;
+			boolean isString = false;
+			boolean isChar = false;
+			boolean isDouble = false;
+			if (strTrataRetorno.length > 1) {
+				if (strTrataRetorno[0].contains("Integer")) {
+					key = key.replaceAll("Integer", "");
 
-				if (dealInt) {
-					key = key.replaceAll("Integer" + min, min + " : integer");
-					
-				}
-				if (dealString) {
-					key = key.replaceAll("String" + min, min + " : string");
-					
-				}
-
-				if (min.equals("int") || min.equals("Integer")) {
-					dealInt = true;
+					isInt = true;
 				} else {
-					dealInt = false;
+					isInt = false;
 				}
+				if (strTrataRetorno[0].contains("String")) {
+					key = key.replaceAll("String", "");
 
-				if (min.equals("String") ) {
-					dealString = true;
+					isString = true;
 				} else {
-					dealString = false;
+					isString = false;
+				}
+				if (strTrataRetorno[0].contains("char")) {
+					key = key.replaceAll("char", "");
+
+					isChar = true;
+				} else {
+					isDouble = false;
+				}
+				if (strTrataRetorno[0].contains("double") || strTrataRetorno[0].contains("Double")) {
+					key = key.replaceAll("double", "");
+
+					isDouble = true;
+				} else {
+					isDouble = false;
 				}
 			}
 
-			str = str + key + ";\n";
-
+			if (isDouble) {
+				str = str + "function " + key + ":double;\n";
+			} else if (isChar) {
+				str = str + "function " + key + ":char;\n";
+			} else if (isString) {
+				str = str + "function " + key + ":string;\n";
+			} else if (isInt) {
+				str = str + "function " + key + ":integer;\n";
+			} else {
+				str = str + "procedure " + key + ";\n";
+			}
 			// declaracao de variaveis
 
 			// tirei o var daqui
@@ -199,25 +356,33 @@ public class Main {
 			// codigo -> dentro da funcao
 			if (list != null) {
 				for (String string : list) {
-					
-					if(string.contains(");")) {
-						
-						matchAux = matchAux+Scanner.doScanner(string);
-						
-					
+
+					if (string.contains(");")) {
+
+						matchAux = matchAux + Scanner.doScanner(string);
+
 					}
-					
-					//rever esse if
+
+					if (string.contains("\\++")) {
+						matchAux = matchAux + Scanner.doScanner(string);
+					}
+					if (string.contains("=")) {
+
+						matchAux = matchAux + Scanner.doScanner(string);
+
+					}
+
+					// rever esse if
 //					if(string.contains("println")) {
 //						
 //						matchAux = matchAux+Scanner.doScanner(string);
 //						
 //					
 //					}
-					
-					if(string.contains("for")) {
-						if(forCont==0) {
-						matchAux = matchAux+Scanner.doScanner(string);
+
+					if (string.contains("for")) {
+						if (forCont == 0) {
+							matchAux = matchAux + Scanner.doScanner(string);
 						}
 						forCont++;
 					}
@@ -225,21 +390,37 @@ public class Main {
 					if (string.contains("while")) {
 
 						if (whileCont == 0) {
-							matchAux = matchAux+Scanner.doScanner(string);
-							if(matchAux.contains("do")) {
-								matchAux=	matchAux.replaceAll("do", "do\n");
+							if (string.contains("==")) {
+
+								string = string.replace("==", "=");
+							}
+							if (string.contains("!=")) {
+
+								string = string.replace("==", "<>");
+							}
+							matchAux = matchAux + Scanner.doScanner(string);
+							if (matchAux.contains("do")) {
+								matchAux = matchAux.replaceAll("do", "do\n");
 							}
 						}
 						whileCont++;
 					}
-					
+
 					if (string.contains("if")) {
 
 						if (ifCont == 0) {
-							matchAux = matchAux+Scanner.doScanner(string);
+							if (string.contains("==")) {
+
+								string = string.replace("==", "=");
+							}
+							if (string.contains("!=")) {
+
+								string = string.replace("==", "<>");
+							}
+							matchAux = matchAux + Scanner.doScanner(string);
 						}
 						ifCont++;
-						
+
 					}
 
 				}
@@ -298,6 +479,44 @@ public class Main {
 		commandMap = teste.getMap();
 		recordMap = teste.getMapRecord();
 
+		List<Block> functionList = new ArrayList<Block>();
+		String addFunction = null;
+		boolean isBuild = true;
+
+		for (String str1 : teste.listaAssinatura) {
+			Iterator<String> itr2 = commandMap.keySet().iterator();
+			while (itr2.hasNext()) {
+				String key = itr2.next();
+
+				String[] antKey = key.split("\\(");
+
+				if (str1.contains(antKey[0])) {
+					Block b = new Block();
+					b.assinatura = str1;
+					b.assinaturaAntiga=key;
+					b.list = commandMap.get(key);
+					functionList.add(b);
+					
+					System.out.println(str1);
+
+					System.err.println(key);
+
+					isBuild = false;
+
+				} else {
+
+				}
+			}
+
+		}
+		for (Block b : functionList) {
+			commandMap.remove(b.assinaturaAntiga);
+		}
+		for (Block b : functionList) {
+			commandMap.put(b.assinatura, b.list);
+		}
+			
+		System.out.println("WRITE ()");
 		writeFile();
 
 	}

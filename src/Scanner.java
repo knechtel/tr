@@ -10,8 +10,8 @@ public class Scanner {
 	static String doScanner(String string) {
 		boolean inFor = false;
 		boolean inInteger = false;
-		Pattern r = Pattern.compile("\\/|\\*|\\+|=|\\d|\\,|\\.|<|=|while|\\}|\\{|:=|if|then|false|end|begin|\\(|"
-				+ "\\)|if|[0-9]+;|String*[a-z]*\\;|Integer|int*[a-z]*\\;|[a-z]*;|[a-z]*" + "");
+		Pattern r = Pattern.compile("\\++|<=|\\/|\\*|\\+|=|\\d|\\,|\\.|<|=|while|\\}|\\{|:=|if|then|false|end|begin|\\(|"
+				+ "\\)|if|[0-9]+;|String*[a-z]*\\;|Integer|int*[a-z]*\\;|[a-z]*;|[a-z]*" + "|[A-Za-z]*");
 
 		Matcher m = r.matcher(string);
 		System.err.println("Dofunction ------------");
@@ -27,8 +27,11 @@ public class Scanner {
 			match = m.group();
 
 			if (!match.equals("")) {
-
-				if (match.contains("=") && inFor) {
+				if(match.contains("++")&&inFor) {
+				
+					
+				}else if (match.contains("=") && inFor) {
+					if(!match.contains("<"))
 					match = match.replaceAll("=", ":=");
 					matchAux = matchAux + match;
 				} else if (match.contains(";") && inFor) {

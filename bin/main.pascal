@@ -7,59 +7,54 @@ end;
 
 type
 Foo = record 
-var: integer; 
+testandoAndSala: integer; 
 testando: char; 
 money: float; 
 end;
 
-TesttestandoInsere();
-var i :integer;a :integer;a :integer;
+procedure Testinsere(test :Test,teste2 :Test,test3 :Test);
+var a :integer;bb :integer;comp :string;literal :string;
 Begin
-for i:=0 to 100++ do 
+insere(t,4);
+while(false)and(false)do
 begin
-for a:=0 to 200++ do 
-begin
-end
 end
 
 End;
 
-FoofuckingDoWork(aux : integer);
-Begin
-
-End;
-
-Testmain(args : string);
+procedure Testmain(Stringargs);
 var i :integer;test :string;
 Begin
 if(true)then
 begin
 end
-ystem.out.println(maiquel);
+system.out.println(maiquel);
 
 End;
 
-Testinsere(Testtest);
-var a :integer;bb :integer;comp :string;literal :string;
+procedure FoofunWork(teste : integer);
+var varilog :integer;i :integer;
 Begin
-if(false)and(true)or(false)then
+if(true)then
 begin
-a:=7;
-if(false)then
-begin
-bb:=9;
-end
-if(false)then
-begin
+i=10;
+var=3;
 end
 if(true)then
 begin
+i=10;
+var=3;
 end
-end
-insere(t,4);
-while(false)and(false)do
-begin
-end
+i=10;
+var=3;
+
+End;
+
+function FootestandoInsere(foo:Foo):double;
+var plusk :integer;maximo :integer;
+Begin
+funork(8);
+pluk=8;
 
 End;
 

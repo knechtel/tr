@@ -1,10 +1,34 @@
 
 class Foo{
 
- private Integer var;
- private char testando;
+
+
+private Integer testandoAndSala;
+private char testando;
 private float money;
-	void fuckingDoWork(Integer aux){}
+	
+	
+	public void funWork(Integer teste){
+	Integer varilog;
+	Integer i;
+	if(true){
+	i=10;
+	var=3;
+	}
+	}
+	
+	
+		
+	public double testandoInsere(Foo foo){
+	
+		Integer plusk;
+		Integer maximo;
+		
+		funWork(8);
+		pluk=8;
+	
+		return null;  
+	}
 }
 
 
@@ -18,7 +42,7 @@ public class Test{
 
 private String name;
 	private boolean verdade;
-	public static void insere(Test test){
+	public static void insere(Test test,Test teste2,Test test3){
 	int a;
 	int bb;
 	String comp;
@@ -26,15 +50,9 @@ private String name;
 	
 	String literal;
 		
-	if(  false && true||false){
-		a = 7;
-		if(false){
-		bb=9;}
-		if(false){}
-		if(true){}
-	}
+
 	insere(t,4);
-	a = (a+2)*3;
+	
 	while(false&& false){
 	}
 	
@@ -49,18 +67,8 @@ private String name;
 
 
 	if(true){}
-		System.out.println(maiquel);
+		system.out.println(maiquel);
 	
 	}
-	
-	public void testandoInsere(){
-	
-	
-	for(Integer i=0; i<100; i++){
-			for(Integer a=0; a<200; a++){
-		
-	}
-	}
-	
-	}
+
 }
